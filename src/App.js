@@ -11,7 +11,7 @@ function App() {
   function addData(e) {
     e.preventDefault();
     axios.post(URL + "inc/addData.php",)
-
+    
   }
 
   const [data, setData] = useState("");
@@ -20,8 +20,8 @@ function App() {
       .then((response) => {
         let newData = "";
         response.data.forEach(e => {
-          newData += e.id + e.description + e.amount;
-        })
+          newData += e.description + " " + e.amount + " ";
+        });
         setData(newData);
       }).catch(error => {
         alert(error);
@@ -30,14 +30,10 @@ function App() {
 
   return (
     <div className='app'> 
-    <h1>Here's some data hopefully:</h1> 
-    <p>{data}</p>
-    
 
     <form onSubmit={addData}>
       
       <div>
-        <input type="text" />
         <input type="text" />
         <input type="text" />
       </div>
@@ -45,6 +41,9 @@ function App() {
       <div><button>kek</button></div>
     </form>
 
+    <h1>Here's some data hopefully:</h1> 
+    <p>{data}</p>
+    
     </div>
     
   );
