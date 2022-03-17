@@ -10,7 +10,7 @@ function App() {
 
   function addData(e) {
     e.preventDefault();
-    
+    axios.post(URL + "inc/addData.php",)
 
   }
 
@@ -18,7 +18,11 @@ function App() {
   useEffect(() => {
     axios.get(URL)
       .then((response) => {
-        setData(response.data[0].description);
+        let newData = "";
+        response.data.forEach(e => {
+          newData += e.id + e.description + e.amount;
+        })
+        setData(newData);
       }).catch(error => {
         alert(error);
       });
