@@ -1,6 +1,9 @@
 * {
   background-color: black;
   color: green;
+  padding: 5px;
+  margin: 5px;
+  font-size: 1.2em;
 }
 
 .app {
