@@ -54,23 +54,23 @@ function App() {
 
   return (
     <div className='app'> 
+      <h1>Shopping list</h1>
+      <form onSubmit={addData}>
+        <p>Add new item</p>
+        <div>
+          <input value={desc} onChange={e => setDesc(e.target.value)}/>
+          <input type="number" value={newAmount} onChange={e => setNewAmount(e.target.value)} />
+        </div>
+        
+        <div><button>Submit</button></div>
+      </form>
 
-    <form onSubmit={addData}>
-      
-      <div>
-        <input value={desc} onChange={e => setDesc(e.target.value)}/>
-        <input type="number" value={newAmount} onChange={e => setNewAmount(e.target.value)} />
+      <div> 
+        <ul>{list?.map(e => (
+          <li key={e.id}>{e.description} <span className='amount'> {e.amount} </span> <a href="#" onClick={() => delet(e.id)}>Delete</a> </li>
+        ))}
+        </ul>
       </div>
-      
-      <div><button>Submit</button></div>
-    </form>
-
-    <h1>Here's some data hopefully:</h1> 
-    <ul>{list?.map(e => (
-      <li key={e.id}>{e.description} {e.amount} <a href="#" onClick={() => delet(e.id)}>Delete</a> </li>
-    ))}
-    </ul>
-    
     </div>
     
   );

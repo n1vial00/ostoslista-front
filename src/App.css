@@ -1,9 +1,7 @@
 * {
   background-color: black;
   color: green;
-  padding: 5px;
-  margin: 5px;
-  font-size: 1.2em;
+  list-style-type: none
 }
 
 .app {
@@ -12,4 +10,9 @@
 
 a {
   color: red;
+}
+
+
+.amount {
+  color: whitesmoke;
 }
