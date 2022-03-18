@@ -11,9 +11,18 @@ function App() {
   const [desc, setDesc] = useState("")
   const [newAmount, setNewAmount] = useState(1)
 
+  useEffect(() => {
+    axios.get(URL)
+      .then((response) => {
+        setList(response.data)
+      }).catch(error => {
+        alert(error);
+      });
+  },[]);
+
   function addData(e) {
     e.preventDefault();
-    const json = JSON.stringify({description:desc});
+    const json = JSON.stringify({description:desc, amount:newAmount});
     axios.post(URL + "inc/addData.php",json,{
       headers: {
         'Content-Type' : 'application/json'
@@ -23,19 +32,25 @@ function App() {
       setList(list => [...list,response.data]);
       setDesc("");
       setNewAmount(1);
-    }).catch (error => {
-      alert(error.response.data.error)
+    }).catch(error => {
+      alert(error.response ? error.response.data.error : error);
+  });
+  }
+
+  function delet(id) {
+    const json = JSON.stringify({id:id})
+    axios.post(URL + "inc/delete.php",json, {
+      headers: {
+        'Content-Type' : 'application/json'
+      }
+    }).then((response) => {
+        const newList = list.filter((item) => item.id !== id);
+        setList(newList);
+    }).catch(error => {
+        alert(error.response ? error.response.data.error : error);
     });
   }
 
-  useEffect(() => {
-    axios.get(URL)
-      .then((response) => {
-        setList(response.data)
-      }).catch(error => {
-        alert(error);
-      });
-  });
 
   return (
     <div className='app'> 
@@ -52,7 +67,7 @@ function App() {
 
     <h1>Here's some data hopefully:</h1> 
     <ul>{list?.map(e => (
-      <li key={e.id}>{e.description} {e.amount}</li>
+      <li key={e.id}>{e.description} {e.amount} <a href="#" onClick={() => delet(e.id)}>Delete</a> </li>
     ))}
     </ul>
     
