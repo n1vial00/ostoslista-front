@@ -7,22 +7,31 @@ const URL = 'http://localhost/Ostoslista-PHP/';
 
 
 function App() {
+  const [list, setList] = useState([])
+  const [desc, setDesc] = useState("")
+  const [newAmount, setNewAmount] = useState(1)
 
   function addData(e) {
     e.preventDefault();
-    axios.post(URL + "inc/addData.php",)
-    
+    const json = JSON.stringify({description:desc});
+    axios.post(URL + "inc/addData.php",json,{
+      headers: {
+        'Content-Type' : 'application/json'
+      }
+    })
+      .then((response) => {
+      setList(list => [...list,response.data]);
+      setDesc("");
+      setNewAmount(1);
+    }).catch (error => {
+      alert(error.response.data.error)
+    });
   }
 
-  const [data, setData] = useState("");
   useEffect(() => {
     axios.get(URL)
       .then((response) => {
-        let newData = "";
-        response.data.forEach(e => {
-          newData += e.description + " " + e.amount + " ";
-        });
-        setData(newData);
+        setList(response.data)
       }).catch(error => {
         alert(error);
       });
@@ -34,15 +43,18 @@ function App() {
     <form onSubmit={addData}>
       
       <div>
-        <input type="text" />
-        <input type="text" />
+        <input value={desc} onChange={e => setDesc(e.target.value)}/>
+        <input type="number" value={newAmount} onChange={e => setNewAmount(e.target.value)} />
       </div>
       
-      <div><button>kek</button></div>
+      <div><button>Submit</button></div>
     </form>
 
     <h1>Here's some data hopefully:</h1> 
-    <p>{data}</p>
+    <ul>{list?.map(e => (
+      <li key={e.id}>{e.description} {e.amount}</li>
+    ))}
+    </ul>
     
     </div>
     
